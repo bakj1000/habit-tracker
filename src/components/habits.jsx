@@ -1,47 +1,44 @@
-import React, { Component } from 'react';
 import Habit from './habit';
 import HabitAddForm from './habitAddForm';
 
-class Habits extends Component {
-  handleIncrement = (habit) => {
-    this.props.onIncrement(habit);
-  };
+import React, { memo, useCallback } from 'react';
 
-  handleDecrement = (habit) => {
-    this.props.onDecrement(habit);
-  };
+const Habits = memo((props) => {
+  const handleIncrement = useCallback((habit) => {
+    props.onIncrement(habit);
+  });
 
-  handleDelete = (habit) => {
-    this.props.onDelete(habit);
-  };
+  const handleDecrement = useCallback((habit) => {
+    props.onDecrement(habit);
+  });
 
-  handleAdd = (habit) => {
-    this.props.onAdd(habit);
-  };
+  const handleDelete = useCallback((habit) => {
+    props.onDelete(habit);
+  });
 
-  render() {
-    return (
-      <>
-        <HabitAddForm onAdd={this.handleAdd} />
-        <div className="habits">
-          <ul>
-            {this.props.habits.map((habit) => (
-              <Habit
-                key={habit.id}
-                habit={habit}
-                onIncrement={this.handleIncrement}
-                onDecrement={this.handleDecrement}
-                onDelete={this.handleDelete}
-              />
-            ))}
-          </ul>
-          <button className="habits-reset" onClick={this.props.onReset}>
-            Reset All
-          </button>
-        </div>
-      </>
-    );
-  }
-}
-
+  const handleAdd = useCallback((habit) => {
+    props.onAdd(habit);
+  });
+  return (
+    <>
+      <HabitAddForm onAdd={handleAdd} />
+      <div className="habits">
+        <ul>
+          {props.habits.map((habit) => (
+            <Habit
+              key={habit.id}
+              habit={habit}
+              onIncrement={handleIncrement}
+              onDecrement={handleDecrement}
+              onDelete={handleDelete}
+            />
+          ))}
+        </ul>
+        <button className="habits-reset" onClick={props.onReset}>
+          Reset All
+        </button>
+      </div>
+    </>
+  );
+});
 export default Habits;
